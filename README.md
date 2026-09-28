@@ -36,7 +36,16 @@ The application uses the Least Significant Bit (LSB) steganography technique to 
 3. The application reads the least significant bits from the image bytes.
 4. The extracted bits are reconstructed into the original text message.
 
-Because only the least significant bits are modified, the visual difference between the original and generated image is typically difficult to notice.
+Because only the least-significant bits of the image data are modified, the resulting visual changes are typically imperceptible under normal viewing conditions.
+
+## Steganography vs Encryption
+
+Steganography and encryption solve different problems.
+
+- **Steganography** attempts to hide the existence of information.
+- **Encryption** protects the contents of information even if it is discovered.
+
+This project implements LSB steganography but does not currently provide cryptographic confidentiality. A stronger implementation could encrypt the message first and then embed the encrypted data into the image.
 
 ## Tech Stack
 
@@ -119,3 +128,61 @@ This project demonstrates the core image-steganography technique used as a found
 
 - GitHub: [github.com/as271996](https://github.com/as271996)
 - LinkedIn: [linkedin.com/in/amit-singh-sp27](https://www.linkedin.com/in/amit-singh-sp27)
+
+## Limitations and Future Improvements
+
+This project focuses on demonstrating the basic Least Significant Bit (LSB) steganography technique. It is intended as an educational implementation rather than a production-grade secure communication system.
+
+### Current Limitations
+
+- The hidden message is not encrypted before being embedded
+- Anyone who knows the encoding technique could potentially extract the hidden data
+- The application currently focuses on hiding text rather than arbitrary binary files
+- Image capacity is limited by the number of available pixels / bytes
+- Lossy image transformations or compression may destroy embedded data
+- Error handling and input validation can be improved
+- The UI and steganography logic are closely coupled
+
+### Security Improvements
+
+- Encrypt the message before embedding it into the image
+- Add password/key-based encryption using a standard cryptographic algorithm such as AES
+- Add integrity verification so modified or corrupted hidden messages can be detected
+- Derive encryption keys securely from user-provided passwords
+- Avoid relying on steganography alone for confidentiality
+
+### Steganography Improvements
+
+- Validate image capacity before attempting to encode a message
+- Support hiding arbitrary binary files in addition to text
+- Support additional lossless image formats where appropriate
+- Randomize or pseudo-randomize the pixel positions used for embedding
+- Allow configurable numbers of least-significant bits to be used
+- Add metadata/version information to support future encoding formats
+- Detect malformed or unsupported steganographic images during decoding
+
+### Architecture & Code Quality
+
+- Separate the Swing UI from the encoding/decoding logic
+- Introduce dedicated services for image encoding and decoding
+- Add custom exceptions and centralized error handling
+- Improve validation for files, message sizes, and unsupported image formats
+- Migrate the build from Ant to Maven or Gradle
+- Upgrade to a modern Java LTS version
+
+### Testing
+
+- Add unit tests for message encoding and decoding
+- Verify that encoded messages can be decoded without data loss
+- Add boundary tests for maximum image capacity
+- Add tests for empty messages and invalid input
+- Add tests for corrupted or modified images
+- Compare original and generated images to verify that only expected image data changes
+
+### User Experience
+
+- Display image capacity and message-size information before encoding
+- Add file-selection validation and clearer error messages
+- Show encoding/decoding progress for larger files
+- Add drag-and-drop support
+- Modernize the desktop interface
